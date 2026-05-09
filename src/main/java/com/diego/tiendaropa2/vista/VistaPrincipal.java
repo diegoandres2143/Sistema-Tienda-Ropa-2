@@ -25,6 +25,10 @@ public class VistaPrincipal extends javax.swing.JFrame {
     public VistaPrincipal() {
         initComponents();
         
+        // Forzar tamaño del campo cantidad
+        txtVentaCantidad.setColumns(10);  // Esto le da un ancho basado en caracteres
+        txtVentaCantidad.setMinimumSize(new java.awt.Dimension(80, 28));
+        txtVentaCantidad.setPreferredSize(new java.awt.Dimension(100, 28));
         // Inicializar el controlador de clientes con los componentes de la vista
         controladorClientes = new ControladorClientes(
             tblClientes,
