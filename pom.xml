@@ -8,6 +8,14 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>25</maven.compiler.release>
-        <exec.mainClass>com.diego.tiendaropa2.Tiendaropa2</exec.mainClass>
+        <exec.mainClass>com.diego.tiendaropa2.Main</exec.mainClass>
     </properties>
+    <dependencies>
+    <!-- Driver para conectar con Neon -->
+    <dependency>
+        <groupId>org.postgresql</groupId>
+        <artifactId>postgresql</artifactId>
+        <version>42.7.3</version>
+    </dependency>
+</dependencies>
 </project>

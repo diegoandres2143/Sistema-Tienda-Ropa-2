@@ -4,10 +4,13 @@
  */
 package com.diego.tiendaropa2.repositorio;
 
+import com.diego.tiendaropa2.modelo.Venta;
+import java.sql.SQLException;
+
 /**
  *
  * @author USUARIO
  */
 public interface IVentaRepositorio {
-    
+    void registrarVenta(Venta venta) throws SQLException;
 }
