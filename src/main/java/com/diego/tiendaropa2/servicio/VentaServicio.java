@@ -4,14 +4,13 @@
  */
 package com.diego.tiendaropa2.servicio;
 
+import java.util.List;
+
 import com.diego.tiendaropa2.modelo.Producto;
 import com.diego.tiendaropa2.modelo.Venta;
 import com.diego.tiendaropa2.repositorio.ProductoRepositorio;
 import com.diego.tiendaropa2.repositorio.VentaRepositorio;
-/**
- *
- * @author USUARIO
- */
+
 public class VentaServicio {
     private final VentaRepositorio ventaRepo;
     private final ProductoRepositorio productoRepo;
@@ -21,6 +20,12 @@ public class VentaServicio {
         this.productoRepo = new ProductoRepositorio();
     }
     
+    public void guardarVenta(Venta venta, List<com.diego.tiendaropa2.modelo.DetalleVenta> detalles) throws Exception {
+        // Asignar detalles a la venta
+        venta.setDetalles(detalles);
+        registrarVenta(venta);
+    }
+
     public void registrarVenta(Venta venta) throws Exception {
         // 1. Validar existencia y stock de todos los productos
         double total = 0.0;
@@ -49,5 +54,22 @@ public class VentaServicio {
             producto.setStock(nuevoStock);
             productoRepo.actualizar(producto);
         }
+    }
+    public void editarVenta(Venta venta) throws Exception {
+        if (venta.getId() <= 0) {
+            throw new Exception("ID de venta inválido para editar.");
+        }
+        ventaRepo.editarVenta(venta);
+    }
+
+    public void eliminarVenta(int id) throws Exception {
+        if (id <= 0) {
+            throw new Exception("ID de venta inválido para eliminar.");
+        }
+        ventaRepo.eliminarVenta(id);
+    }
+
+    public List<Venta> listarVentas() throws Exception {
+        return ventaRepo.listarVentas();
     }
 }

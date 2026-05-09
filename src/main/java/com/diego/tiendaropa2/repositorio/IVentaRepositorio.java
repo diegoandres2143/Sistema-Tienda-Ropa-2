@@ -4,8 +4,9 @@
  */
 package com.diego.tiendaropa2.repositorio;
 
-import com.diego.tiendaropa2.modelo.Venta;
 import java.sql.SQLException;
+
+import com.diego.tiendaropa2.modelo.Venta;
 
 /**
  *
@@ -13,4 +14,7 @@ import java.sql.SQLException;
  */
 public interface IVentaRepositorio {
     void registrarVenta(Venta venta) throws SQLException;
+    void editarVenta(Venta venta) throws SQLException;
+    void eliminarVenta(int id) throws SQLException;
+    java.util.List<Venta> listarVentas() throws SQLException;
 }

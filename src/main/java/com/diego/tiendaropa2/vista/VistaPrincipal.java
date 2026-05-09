@@ -4,11 +4,18 @@
  */
 package com.diego.tiendaropa2.vista;
 
+import com.diego.tiendaropa2.controlador.ControladorClientes;
+import com.diego.tiendaropa2.controlador.ControladorProductos;
+import com.diego.tiendaropa2.controlador.ControladorVentas;
+
 /**
  *
  * @author USUARIO
  */
 public class VistaPrincipal extends javax.swing.JFrame {
+    private ControladorClientes controladorClientes;
+    private ControladorProductos controladorProductos;
+    private ControladorVentas controladorVentas;
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VistaPrincipal.class.getName());
 
@@ -17,6 +24,42 @@ public class VistaPrincipal extends javax.swing.JFrame {
      */
     public VistaPrincipal() {
         initComponents();
+        
+        // Inicializar el controlador de clientes con los componentes de la vista
+        controladorClientes = new ControladorClientes(
+            tblClientes,
+            txtClienteCedula,
+            txtClienteNombre,
+            txtClienteCorreo,
+            txtClienteAvisos
+        );
+        controladorClientes.cargarTablaClientes();
+        
+        // Inicializar el controlador de productos
+        controladorProductos = new ControladorProductos(
+            tblProductos,
+            txtProductoCodigo,
+            txtProductoNombre,
+            txtProductoTalla,
+            txtProductoColor,
+            txtProductoPrecio,
+            txtProductoStock,
+            txtProductoAvisos
+        );
+        controladorProductos.cargarTablaProductos();
+        
+        // Inicializar el controlador de ventas
+        controladorVentas = new ControladorVentas(
+            comboVentaCliente,
+            comboVentaProducto,
+            txtVentaCantidad,
+            txtVentaFecha,
+            txtVentaTotal,
+            tblVentaDetalles,
+            txtVentaAvisos
+        );
+        controladorVentas.cargarClientesEnCombo();
+        controladorVentas.cargarProductosEnCombo();
     }
 
     /**
@@ -128,6 +171,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
         lblListadoClientes.setText("Listado Clientes");
 
         btnClienteEditar.setText("Editar");
+        btnClienteEditar.addActionListener(this::btnClienteEditarActionPerformed);
 
         tblClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -141,6 +185,11 @@ public class VistaPrincipal extends javax.swing.JFrame {
             }
         ));
         tblClientes.setColumnSelectionAllowed(true);
+        tblClientes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblClientesMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblClientes);
         tblClientes.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
@@ -261,12 +310,11 @@ public class VistaPrincipal extends javax.swing.JFrame {
 
         lblProductoColor.setText("Color:");
 
-        txtProductoColor.addActionListener(this::txtProductoColorActionPerformed);
-
         btnProductoAgregar.setText("Agregar");
         btnProductoAgregar.addActionListener(this::btnProductoAgregarActionPerformed);
 
         btnProductoEditar.setText("Editar");
+        btnProductoEditar.addActionListener(this::btnProductoEditarActionPerformed);
 
         btnProductoEliminar.setText("Eliminar");
         btnProductoEliminar.addActionListener(this::btnProductoEliminarActionPerformed);
@@ -286,6 +334,11 @@ public class VistaPrincipal extends javax.swing.JFrame {
             }
         ));
         tblProductos.setColumnSelectionAllowed(true);
+        tblProductos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblProductosMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(tblProductos);
         tblProductos.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
@@ -422,20 +475,18 @@ public class VistaPrincipal extends javax.swing.JFrame {
         btnVentaAgregar.addActionListener(this::btnVentaAgregarActionPerformed);
 
         comboVentaCliente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        comboVentaCliente.addActionListener(this::comboVentaClienteActionPerformed);
 
         lblVentaFecha.setText("Fecha:");
 
         comboVentaProducto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        comboVentaProducto.addActionListener(this::comboVentaProductoActionPerformed);
 
         txtVentaFecha.setEditable(false);
-        txtVentaFecha.addActionListener(this::txtVentaFechaActionPerformed);
 
         btnVentaQuitar.setText("Quitar");
         btnVentaQuitar.addActionListener(this::btnVentaQuitarActionPerformed);
 
         btnVentaRegistrar.setText("Registrar");
+        btnVentaRegistrar.addActionListener(this::btnVentaRegistrarActionPerformed);
 
         btnVentaLimpiar.setText("Limpiar");
         btnVentaLimpiar.addActionListener(this::btnVentaLimpiarActionPerformed);
@@ -592,57 +643,66 @@ public class VistaPrincipal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtProductoColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtProductoColorActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtProductoColorActionPerformed
+    // ==================== EVENTOS CLIENTES ====================
+    private void btnClienteAgregarActionPerformed(java.awt.event.ActionEvent evt) {
+        controladorClientes.agregarCliente();
+    }
 
-    private void btnClienteAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClienteAgregarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnClienteAgregarActionPerformed
+    private void btnClienteEliminarActionPerformed(java.awt.event.ActionEvent evt) {
+        controladorClientes.eliminarCliente();
+    }
 
-    private void btnClienteEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClienteEliminarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnClienteEliminarActionPerformed
+    private void btnClienteLimpiarActionPerformed(java.awt.event.ActionEvent evt) {
+        controladorClientes.limpiarCampos();
+        controladorClientes.mostrarAviso("");
+    }
 
-    private void btnClienteLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClienteLimpiarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnClienteLimpiarActionPerformed
+    private void btnClienteEditarActionPerformed(java.awt.event.ActionEvent evt) {
+        controladorClientes.editarCliente();
+    }
 
-    private void btnProductoAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductoAgregarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnProductoAgregarActionPerformed
+    private void tblClientesMouseClicked(java.awt.event.MouseEvent evt) {
+        controladorClientes.cargarDatosClienteSeleccionado();
+    }
 
-    private void btnProductoEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductoEliminarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnProductoEliminarActionPerformed
+    // ==================== EVENTOS PRODUCTOS ====================
+    private void btnProductoAgregarActionPerformed(java.awt.event.ActionEvent evt) {
+        controladorProductos.agregarProducto();
+    }
 
-    private void btnProductoLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductoLimpiarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnProductoLimpiarActionPerformed
+    private void btnProductoEditarActionPerformed(java.awt.event.ActionEvent evt) {
+        controladorProductos.editarProducto();
+    }
 
-    private void comboVentaClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboVentaClienteActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_comboVentaClienteActionPerformed
+    private void btnProductoEliminarActionPerformed(java.awt.event.ActionEvent evt) {
+        controladorProductos.eliminarProducto();
+    }
 
-    private void comboVentaProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboVentaProductoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_comboVentaProductoActionPerformed
+    private void btnProductoLimpiarActionPerformed(java.awt.event.ActionEvent evt) {
+        controladorProductos.limpiarCampos();
+        controladorProductos.mostrarAviso("");
+    }
 
-    private void txtVentaFechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtVentaFechaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtVentaFechaActionPerformed
+    private void tblProductosMouseClicked(java.awt.event.MouseEvent evt) {
+        controladorProductos.cargarDatosProductoSeleccionado();
+    }
 
-    private void btnVentaAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVentaAgregarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnVentaAgregarActionPerformed
+    // ==================== EVENTOS VENTAS ====================
+    private void btnVentaAgregarActionPerformed(java.awt.event.ActionEvent evt) {
+        controladorVentas.agregarProductoAlCarrito();
+    }
 
-    private void btnVentaLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVentaLimpiarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnVentaLimpiarActionPerformed
+    private void btnVentaQuitarActionPerformed(java.awt.event.ActionEvent evt) {
+        controladorVentas.quitarProductoDelCarrito();
+    }
 
-    private void btnVentaQuitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVentaQuitarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnVentaQuitarActionPerformed
+    private void btnVentaRegistrarActionPerformed(java.awt.event.ActionEvent evt) {
+        controladorVentas.registrarVenta();
+    }
+
+    private void btnVentaLimpiarActionPerformed(java.awt.event.ActionEvent evt) {
+        controladorVentas.limpiarCarrito();
+    }
 
     /**
      * @param args the command line arguments
