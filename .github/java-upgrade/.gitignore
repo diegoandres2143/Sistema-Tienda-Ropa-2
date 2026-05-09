@@ -18,6 +18,12 @@ nbdist/
 .nb-gradle/
 build/
 
+# --- Git Hooks / Tooling ---
+java-update/
+hooks/
+*.ps1
+*.sh
+
 # --- Otros archivos del Sistema ---
 .DS_Store
 Thumbs.db
