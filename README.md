@@ -1,7 +1,3 @@
-Claro, aquí tienes un archivo `README.md` completo, con estilo académico y detallado, sin emojis, adecuado para un proyecto universitario o profesional.
-
----
-
 # Sistema de Gestión de Tienda de Ropa
 
 ## Descripción del Proyecto
